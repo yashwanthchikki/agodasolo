@@ -1,0 +1,7 @@
+{
+  "name": "Agoda Solo",
+  "description": "A fully integrated travel planning and content creation application for solo travelers.",
+  "requestFramePermissions": [
+    "geolocation"
+  ]
+}
