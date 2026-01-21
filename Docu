@@ -1,0 +1,263 @@
+Good direction. You want it to feel written by a human who actually built and used the system, not a spec sheet and not an essay.
+
+Below is a balanced rewrite:
+
+Mix of short paragraphs + selective bullet points
+
+Lighter tone, less “AI symmetry”
+
+An FAQ section only where it adds value
+
+Explanations for why certain approaches were chosen, but not everywhere
+
+
+This is Word-ready and reads like internal engineering documentation.
+
+
+---
+
+NetBenefits Page Prioritization Engine
+
+Design, Usage, and Rationale
+
+
+---
+
+Overview
+
+The NetBenefits Page Prioritization Engine is an interactive Streamlit application built to help teams decide where to focus improvement efforts across application pages. The idea is simple: combine multiple performance signals into a single, comparable priority score, while still allowing teams to adjust assumptions and see how outcomes change.
+
+Rather than hard-coding one definition of “priority,” the tool allows users to express different viewpoints through weighting profiles and then compare the results side by side.
+
+
+---
+
+What Problem This Solves
+
+Page performance is rarely explained by a single metric. High traffic does not always mean high impact, and low satisfaction does not always mean urgency unless volume or friction supports it.
+
+This tool helps answer questions such as:
+
+Which pages create the most customer effort at scale?
+
+How do priorities shift if friction is weighted more than engagement?
+
+Which pages are consistently important regardless of assumptions?
+
+
+By making trade-offs explicit, the application supports clearer, faster decision-making.
+
+
+---
+
+Data Input and Scope
+
+The application reads from a single Excel file (data.xlsx) located in the same directory as the code.
+
+Key characteristics:
+
+Data is treated as read-only
+
+Column names are fixed and case-sensitive
+
+All filtering and transformation happens in memory
+
+
+Filters are applied using the sidebar and affect all calculations consistently:
+
+Category and sub-category
+
+Transaction flag
+
+Minimum response threshold (where applicable)
+
+
+This keeps the analysis flexible without altering the underlying data.
+
+
+---
+
+How Priority Is Calculated (In Plain Terms)
+
+Each page group receives a priority score based on multiple metrics. Because these metrics operate on very different scales, they are first normalized.
+
+Important points:
+
+All metrics are normalized using min–max scaling
+
+Satisfaction scores are inverted so that lower satisfaction increases priority
+
+User-defined weights are normalized internally so relative importance matters more than raw slider values
+
+
+The final score is a weighted sum of these normalized values. Pages are then ranked from highest to lowest priority.
+
+The goal is not mathematical complexity, but clarity and consistency.
+
+
+---
+
+Weighting Profiles and Scenario Analysis
+
+The application supports multiple weighting profiles, each representing a different strategic lens.
+
+Examples include:
+
+A balanced view where all factors matter equally
+
+A friction-focused view that emphasizes calls and effort
+
+An engagement-heavy view that prioritizes volume and usage
+
+
+Profiles:
+
+Can be added or removed dynamically
+
+Are named by the user
+
+Are displayed as tabs for easy comparison
+
+
+This makes it easy to test “what-if” scenarios without losing track of earlier assumptions.
+
+
+---
+
+Profile Comparison
+
+When multiple profiles exist, the system compares the priority scores between profiles. Rather than just showing two ranked lists, it highlights where and how much priorities differ.
+
+This comparison is useful for:
+
+Identifying pages sensitive to strategic assumptions
+
+Understanding disagreements between teams
+
+Focusing discussion on high-impact differences rather than noise
+
+
+The comparison logic is intentionally kept simple and modular so it can evolve without affecting the rest of the application.
+
+
+---
+
+Visual Exploration
+
+Beyond ranking, the application includes an exploration section for deeper analysis.
+
+This includes:
+
+Bar charts showing top or bottom pages for a selected metric
+
+Scatter plots with linear regression to inspect relationships between metrics
+
+
+These visuals are not meant to replace the priority score, but to:
+
+Validate assumptions
+
+Reveal unexpected patterns
+
+Support deeper investigation when needed
+
+
+
+---
+
+Design Choices and Rationale (Selected)
+
+Some design decisions are worth calling out explicitly.
+
+Why normalization instead of z-scores?
+
+Min–max normalization preserves relative ordering
+
+It is easier to explain to non-technical users
+
+It avoids unintuitive negative values
+
+
+Why invert satisfaction metrics?
+
+Low satisfaction represents higher urgency
+
+Inversion ensures all inputs move priority in the same direction
+
+
+Why allow multiple profiles instead of one “correct” model?
+
+Different teams value different outcomes
+
+The goal is alignment through comparison, not enforcement
+
+
+Why keep comparison logic simple?
+
+Most value comes from seeing deltas, not complex statistics
+
+Simpler logic is easier to trust and extend
+
+
+
+---
+
+FAQ
+
+Q: Why not use a machine learning model for prioritization?
+A: The goal is transparency and control. A weighted model makes assumptions explicit and easy to challenge. For prioritization discussions, interpretability matters more than predictive power.
+
+Q: Why normalize weights as well as metrics?
+A: Without weight normalization, absolute slider values can distort results. Normalization ensures that intent (relative importance) drives outcomes.
+
+Q: Why is comparison limited to two profiles?
+A: Most discussions involve comparing two viewpoints. The design keeps the current behavior simple while allowing future expansion to multi-profile comparisons.
+
+Q: Why is data exploration separate from prioritization?
+A: Mixing exploration with ranking can distract from decisions. Separating them keeps prioritization focused while still supporting deeper analysis when needed.
+
+Q: Why is the application read-only?
+A: This avoids accidental data corruption and keeps the tool safe for shared use.
+
+
+---
+
+Extensibility and Future Use
+
+The current structure supports:
+
+Adding new metrics
+
+Introducing alternative comparison logic
+
+Exporting results
+
+Enhancing visualization
+
+
+These can be implemented without changing the core workflow or existing assumptions.
+
+
+---
+
+Closing Thoughts
+
+This tool is meant to support structured thinking, not replace judgment. Its value comes from making assumptions visible, enabling comparison, and grounding discussions in data.
+
+Used correctly, it helps teams move from opinion-driven debates to evidence-based prioritization.
+
+
+---
+
+If you want next:
+
+A short executive summary
+
+A 1-page “How to use” section
+
+A diagram-based explanation
+
+Or help tailoring this for a handover or audit audience
+
+
+Say which and I’ll adapt it.
