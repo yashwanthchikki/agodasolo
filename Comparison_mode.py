@@ -1,7 +1,11 @@
-# Simple comparison utilities for priority outputs
-# Intentionally lightweight and expandable
+# Simple comparison logic between two priority outputs
 
 def compare_two_profiles(df_a, df_b, key="PAGE_GROUP"):
+    """
+    Compares RawPriority scores between two profiles.
+    Returns delta (A - B) sorted by impact.
+    """
+
     merged = df_a[[key, "RawPriority"]].merge(
         df_b[[key, "RawPriority"]],
         on=key,
@@ -9,4 +13,5 @@ def compare_two_profiles(df_a, df_b, key="PAGE_GROUP"):
     )
 
     merged["Delta"] = merged["RawPriority_A"] - merged["RawPriority_B"]
+
     return merged.sort_values("Delta", ascending=False)
